@@ -18,6 +18,7 @@ public class AuthController {
     UserService userService;
     @PostMapping("/register")
     public User register(@RequestBody User user){
+        System.out.println("hello");
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         return userService.createUser(user);
     }
