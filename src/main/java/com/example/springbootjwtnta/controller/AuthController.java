@@ -1,9 +1,11 @@
 package com.example.springbootjwtnta.controller;
 
 
+import antlr.Token;
 import com.example.springbootjwtnta.authen.UserPrincipal;
 import com.example.springbootjwtnta.entity.User;
 import com.example.springbootjwtnta.service.UserService;
+import com.example.springbootjwtnta.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     @Autowired
     UserService userService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
     @PostMapping("/register")
     public User register(@RequestBody User user){
         System.out.println("hello");
@@ -34,7 +39,9 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Account or password is not valid!");
         }
-        return ResponseEntity.ok(user);
+        String token = jwtUtil.generateToken(userPrincipal);
+
+        return ResponseEntity.ok(token);
     }
 
 }
